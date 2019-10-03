@@ -38,6 +38,16 @@ if path is missing, the middleware function is executed for every request to the
 app.use(mainRoutes);
 app.use('/cards', cardRoutes);
 
+/**
+ * In order for 404 errorhandling middleware to work,
+ * an error (or something) has to be passed into next
+ * from non-existing route
+ */
+app.use((req, res, next) => {
+    next(new Error('Something bad happened'));
+    // ↑ when next is passed, the next applicable middleware function will be called
+})
+
 // ↓ Error handling middleware: Takes four arguments
 // https://expressjs.com/en/guide/error-handling.html
 app.use((err, req, res, next) => {
